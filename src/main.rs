@@ -2,8 +2,9 @@ use crate::domain::movement::Movement;
 use crate::domain::movement::Movement::{MOVE, LEFT, RIGHT};
 use crate::domain::grid::{Dimensions, MOVE_CARTS, Grid};
 use crate::domain::cart::{Coordinate, Cart};
-use crate::domain::cart::Direction::{EAST, NORTH};
+use crate::domain::cart::Direction::{EAST, NORTH, SOUTH};
 use crate::infrastructure::ui;
+use crate::ui::PRINT;
 
 mod domain;
 mod infrastructure;
@@ -25,10 +26,16 @@ fn main() {
              vec![
                  MOVE, MOVE, RIGHT, MOVE, MOVE, RIGHT, MOVE, RIGHT, RIGHT, MOVE,
              ]),
+            (Cart {
+                coordinate: Coordinate { x: 0, y: 0 },
+                direction: SOUTH,
+            },
+             vec![
+                 MOVE, MOVE
+             ])
         ];
     let grid = Grid { boundaries: Dimensions { width: 5, height: 5 }, carts: vec![] };
 
-    if let Some(v) = MOVE_CARTS(missions, &grid) {
-        ui::PRINT(v);
-    }
+    let move_carts_result = MOVE_CARTS(missions, &grid);
+    PRINT(move_carts_result);
 }

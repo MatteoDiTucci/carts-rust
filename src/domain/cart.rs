@@ -1,7 +1,7 @@
 #[derive(PartialEq, Clone, Debug)]
 pub struct Coordinate {
-    pub x: u32,
-    pub y: u32,
+    pub x: i32,
+    pub y: i32,
 }
 
 #[derive(PartialEq, Clone, Debug)]
