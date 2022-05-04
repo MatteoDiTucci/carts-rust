@@ -2,9 +2,8 @@ pub mod ui {
     use std::fmt;
     use std::fmt::Formatter;
     use crate::domain::cart::Direction;
-    use crate::domain::error::InvalidMove;
+    use crate::domain::error::InvalidMovementError;
     use crate::{Cart, Grid, Movement};
-
 
     impl fmt::Display for Direction {
         fn fmt(&self, f: &mut Formatter) -> fmt::Result {
@@ -33,13 +32,13 @@ pub mod ui {
         }
     }
 
-    impl fmt::Display for InvalidMove {
+    impl fmt::Display for InvalidMovementError {
         fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
             write!(f, "{}", format!("Cannot apply {} to cart at position {}", self.movement, self.cart))
         }
     }
 
-    pub const PRINT: fn(Result<Grid, InvalidMove>) -> () = {
+    pub const PRINT: fn(Result<Grid, InvalidMovementError>) -> () = {
         |result| {
             if result.is_ok() {
                 for cart in result.unwrap().carts {

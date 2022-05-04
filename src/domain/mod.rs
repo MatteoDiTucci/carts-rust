@@ -2,12 +2,13 @@ pub mod cart;
 pub mod grid;
 pub mod movement;
 pub mod error;
+pub mod move_carts;
 
 #[cfg(test)]
 mod functional_tests {
     use crate::{Dimensions, Cart, Coordinate, MOVE, Grid, LEFT, MOVE_CARTS, NORTH, RIGHT};
     use crate::domain::cart::Direction::{EAST, SOUTH};
-    use crate::domain::error::InvalidMove;
+    use crate::domain::error::InvalidMovementError;
 
     #[test]
     fn move_carts() {
@@ -53,6 +54,6 @@ mod functional_tests {
 
         let result = MOVE_CARTS(missions, &grid);
 
-        assert_eq!(InvalidMove { movement: MOVE, cart }, result.unwrap_err());
+        assert_eq!(InvalidMovementError { movement: MOVE, cart }, result.unwrap_err());
     }
 }

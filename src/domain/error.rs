@@ -1,7 +1,7 @@
 use crate::{Cart, Movement};
 
 #[derive(Debug, PartialEq)]
-pub struct InvalidMove {
+pub struct InvalidMovementError {
     pub movement: Movement,
     pub cart: Cart
 }
