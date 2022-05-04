@@ -2,26 +2,9 @@ use crate::domain::error::InvalidMovementError;
 use crate::{Cart, Grid, Movement};
 
 pub type Mission = (Cart, Vec<Movement>);
-pub type MoveCarts = fn(Vec<Mission>, &Grid) -> Result<Grid, InvalidMovementError>;
+pub type MoveCart = fn(Mission, &Grid) -> Result<Grid, InvalidMovementError>;
 
-pub const MOVE_CARTS: MoveCarts = {
-    |missions, grid| {
-        let mut result = grid.clone();
-
-        for mission in missions {
-            let new_grid = MOVE_CART(mission, &result);
-            if new_grid.is_err() {
-                return Err(new_grid.unwrap_err());
-            }
-            result = new_grid.unwrap();
-        }
-        Ok(result)
-    }
-};
-
-type MoveCart = fn(Mission, &Grid) -> Result<Grid, InvalidMovementError>;
-
-const MOVE_CART: MoveCart = {
+pub const MOVE_CART: MoveCart = {
     |(cart, movements), grid| {
         let mut moved_cart: Cart = cart;
 

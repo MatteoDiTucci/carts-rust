@@ -3,7 +3,7 @@ use crate::domain::movement::Movement::{MOVE, LEFT, RIGHT};
 use crate::domain::grid::{Dimensions, Grid};
 use crate::domain::cart::{Coordinate, Cart};
 use crate::domain::cart::Direction::{EAST, NORTH, SOUTH};
-use crate::domain::move_carts::MOVE_CARTS;
+use crate::domain::move_carts::{MOVE_CART};
 use crate::infrastructure::ui;
 use crate::ui::PRINT;
 
@@ -43,6 +43,8 @@ fn main() {
         carts: vec![],
     };
 
-    let move_carts_result = MOVE_CARTS(missions, &grid);
-    PRINT(move_carts_result);
+    for mission in missions {
+        let result = MOVE_CART(mission, &grid);
+        PRINT(result);
+    }
 }
