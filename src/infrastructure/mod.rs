@@ -40,12 +40,13 @@ pub mod ui {
 
     pub const PRINT: fn(Result<Grid, InvalidMovementError>) -> () = {
         |result| {
-            if result.is_ok() {
-                for cart in result.unwrap().carts {
-                    println!("{} {} {}", cart.coordinate.x, cart.coordinate.y, cart.direction)
+            match result {
+                Ok(grid) => {
+                    for cart in grid.carts {
+                        println!("{} {} {}", cart.coordinate.x, cart.coordinate.y, cart.direction)
+                    }
                 }
-            } else {
-                println!("{}", format!("{}", result.unwrap_err()))
+                Err(error) => println!("{}", format!("{}", error))
             }
         }
     };

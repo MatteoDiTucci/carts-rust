@@ -2,7 +2,6 @@ pub mod cart;
 pub mod grid;
 pub mod movement;
 pub mod error;
-pub mod move_carts;
 
 #[cfg(test)]
 mod functional_tests {
