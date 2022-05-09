@@ -5,7 +5,7 @@ use crate::domain::cart::{Coordinate, Cart};
 use crate::domain::cart::Direction::{EAST, NORTH, SOUTH};
 use crate::infrastructure::ui;
 use crate::ui::PRINT;
-use crate::use_cases::{Mission, MOVE_CART};
+use crate::use_cases::{Race, RUN_RACE};
 
 mod domain;
 mod infrastructure;
@@ -14,8 +14,8 @@ mod use_cases;
 fn main() {
     let grid = grid();
 
-    for mission in missions() {
-        let result = MOVE_CART(mission, &grid);
+    for race in races() {
+        let result = RUN_RACE(race, &grid);
         PRINT(result);
     }
 }
@@ -30,7 +30,7 @@ fn grid() -> Grid {
     }
 }
 
-fn missions() -> Vec<Mission> {
+fn races() -> Vec<Race> {
     vec![
         (Cart {
             coordinate: Coordinate { x: 1, y: 2 },

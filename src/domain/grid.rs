@@ -1,4 +1,6 @@
-use crate::{Cart, Movement};
+use crate::{Cart, Movement, Race};
+use crate::domain::cart::MOVE_CART;
+use crate::domain::error::ForbiddenMovementError;
 
 #[derive(Clone, Debug)]
 pub struct Dimensions {
@@ -12,9 +14,31 @@ pub struct Grid {
     pub carts: Vec<Cart>,
 }
 
-type AddCartToGrid = fn(Cart, &Grid) -> Grid;
+type RunRaceOnGrid = fn(Race, &Grid) -> Result<Grid, ForbiddenMovementError>;
 
-pub const ADD_CART_TO_GRID: AddCartToGrid = {
+pub const RUN_RACE_ON_GRID: RunRaceOnGrid = {
+    |(cart, movements), grid| {
+        let mut moved_cart = cart;
+
+        for movement in movements {
+            if IS_MOVEMENT_FORBIDDEN(&grid, &moved_cart, &movement) {
+                return Err(
+                    ForbiddenMovementError {
+                        movement,
+                        cart: moved_cart,
+                    }
+                );
+            }
+            moved_cart = MOVE_CART(&moved_cart, &movement);
+        }
+
+        Ok(
+            ADD_CART_TO_GRID(moved_cart, grid)
+        )
+    }
+};
+
+const ADD_CART_TO_GRID: fn(Cart, &Grid) -> Grid = {
     |cart, grid| {
         let mut result = grid.carts.clone();
         result.push(cart);
@@ -26,9 +50,9 @@ pub const ADD_CART_TO_GRID: AddCartToGrid = {
     }
 };
 
-pub const IS_MOVEMENT_FORBIDDEN: fn(&Grid, &Cart, &Movement) -> bool =
+const IS_MOVEMENT_FORBIDDEN: fn(&Grid, &Cart, &Movement) -> bool =
     |grid, cart, movement| {
-        let moved_cart = movement.apply(&cart);
+        let moved_cart = MOVE_CART(&cart, movement);
 
         moved_cart.coordinate.x > grid.boundaries.width
             || moved_cart.coordinate.x < 0
